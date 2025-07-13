@@ -34,7 +34,7 @@ RUN /usr/bin/yes | comfy --workspace /comfyui install --fast-deps --cuda-version
 WORKDIR /comfyui
 
 # Install runpod
-RUN pip install runpod requests
+RUN pip install runpod requests dill
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
