@@ -11,3 +11,7 @@ runpod_worker_comfy:
   upscale_models: models/upscale_models/
   vae: models/vae/
   unet: models/unet/
+  facerestore_models: models/facerestore_models/
+  sams: models/sams/
+  ultralytics: models/ultralytics/
+  nsfw_detector: models/nsfw_detector/
