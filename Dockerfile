@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Prefer binary wheels over source distributions for faster pip installations
 ENV PIP_PREFER_BINARY=1
 # Ensures output from python is printed immediately to the terminal without buffering
-ENV PYTHONUNBUFFERED=1 
+ENV PYTHONUNBUFFERED=1
 # Speed up some cmake builds
 ENV CMAKE_BUILD_PARALLEL_LEVEL=8
 
@@ -33,8 +33,15 @@ RUN /usr/bin/yes | comfy --workspace /comfyui install --fast-deps --cuda-version
 # Change working directory to ComfyUI
 WORKDIR /comfyui
 
+# Download some of the custom models
+# Reactor doesn't see the network volume, so those must be baked in
+RUN wget -O models/facerestore_models/GFPGANv1.3.pth https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GFPGANv1.3.pth
+RUN wget -O models/facerestore_models/GFPGANv1.4.pth https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GFPGANv1.4.pth
+RUN wget -O models/facerestore_models/codeformer-v0.1.0.pth https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/codeformer-v0.1.0.pth
+RUN wget -O models/facerestore_models/GPEN-BFR-512.onnx https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GPEN-BFR-512.onnx
+
 # Install runpod
-RUN pip install runpod requests dill
+RUN pip install runpod requests dill lark diffusers
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
