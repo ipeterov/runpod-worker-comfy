@@ -24,4 +24,7 @@ target "base" {
   target = "base"
   platforms = ["linux/amd64"]
   tags = ["${DOCKERHUB_REPO}/${DOCKERHUB_IMG}:base-${RELEASE_VERSION}"]
+  args = {
+    HUGGINGFACE_ACCESS_TOKEN = "${HUGGINGFACE_ACCESS_TOKEN}"
+  }
 }
