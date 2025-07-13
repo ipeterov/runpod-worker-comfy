@@ -1,4 +1,4 @@
-name: Development
+name: CI
 
 on:
   workflow_dispatch:
@@ -30,8 +30,9 @@ jobs:
           chmod +x tests/test_restore_snapshot.sh
           ./tests/test_restore_snapshot.sh
 
-  dev:
+  build:
     runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
