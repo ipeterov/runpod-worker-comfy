@@ -1,6 +1,6 @@
 runpod_worker_comfy:
   is_default: true
-  base_path: /workspace/
+  base_path: /workspace/comfyui/
   checkpoints: models/checkpoints/
   clip: models/clip/
   clip_vision: models/clip_vision/
