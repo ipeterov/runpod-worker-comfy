@@ -63,5 +63,7 @@ ADD *snapshot*.json /
 # Restore the snapshot to install custom nodes
 RUN /restore_snapshot.sh
 
+COPY src/reactor_sfw.py /comfyui/custom_nodes/comfyui-reactor/scripts/
+
 # Start container
 CMD ["/start.sh"]
