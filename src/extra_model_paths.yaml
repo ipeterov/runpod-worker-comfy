@@ -16,4 +16,5 @@ runpod_worker_comfy:
   nsfw_detector: models/nsfw_detector/
   ultralytics: models/ultralytics/
   ultralytics_bbox: models/ultralytics/bbox/
+  ultralytics_segm: models/ultralytics/segm/
   ipadapter: models/ipadapter/
