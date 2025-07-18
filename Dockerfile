@@ -45,7 +45,7 @@ RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O mode
 RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O models/facerestore_models/GPEN-BFR-512.onnx https://huggingface.co/datasets/Gourieff/ReActor/resolve/main/models/facerestore_models/GPEN-BFR-512.onnx
 
 # Install runpod
-RUN pip install runpod requests dill lark diffusers timm
+RUN pip install runpod requests dill lark diffusers timm groundingdino-py
 
 # Support for the network volume
 ADD src/extra_model_paths.yaml ./
