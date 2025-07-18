@@ -12,12 +12,15 @@
         "https://github.com/Gourieff/ComfyUI-ReActor": {
             "hash": "9b17e4cea53769d7157e507659adbbe09a3114fe",
             "disabled": false
+        },
+        "https://github.com/Felsir/Comfy_Felsirnodes": {
+            "hash": "17ae14f5f032f3e84b06b535969dbaa47ce1d239",
+            "disabled": false
         }
     },
     "cnr_custom_nodes": {
         "comfyui-adaptive-guidance": "0.4.0",
         "comfyui-advancedliveportrait": "1.0.0",
-        "comfyui-easy-use": "1.3.1",
         "comfyui-rmbg": "2.6.0",
         "comfyui_controlnet_aux": "1.1.0",
         "comfyui_ipadapter_plus": "2.0.0",
