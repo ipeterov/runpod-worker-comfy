@@ -121,8 +121,17 @@ def upload_images(images):
 
     for image in images:
         name = image["name"]
-        image_data = image["image"]
-        blob = base64.b64decode(image_data)
+        image_data = image.get("image", None)
+        image_url = image.get("image_url", None)
+
+        if image_data:
+            blob = base64.b64decode(image_data)
+        elif image_url:
+            response = requests.get(image_url)
+            blob = response.content
+        else:
+            upload_errors.append(f"Error uploading {name}: need image or image_url key")
+            continue
 
         # Prepare the form data
         files = {
