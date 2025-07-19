@@ -134,9 +134,9 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         outputs = {
             "node_id": {"images": [{"filename": "ComfyUI_00001_.png", "subfolder": ""}]}
         }
-        job_id = "123"
+        job = {"id": "123"}
 
-        result = rp_handler.process_output_images(outputs, job_id)
+        result = rp_handler.process_output_images(outputs, job)
 
         self.assertEqual(result["status"], "success")
 
@@ -158,16 +158,16 @@ class TestRunpodWorkerComfy(unittest.TestCase):
 
         # Define the outputs and job_id for the test
         outputs = {"node_id": {"images": [{"filename": "ComfyUI_00001_.png", "subfolder": "test"}]}}
-        job_id = "123"
+        job = {"id": "123"}
 
         # Call the function under test
-        result = rp_handler.process_output_images(outputs, job_id)
+        result = rp_handler.process_output_images(outputs, job)
 
         # Assertions
         self.assertEqual(result["status"], "success")
         self.assertEqual(result["message"], "http://example.com/uploaded/image.png")
         mock_upload_image.assert_called_once_with(
-            job_id, "./test_resources/images/test/ComfyUI_00001_.png", bucket_name=None
+            job['id'], "./test_resources/images/test/ComfyUI_00001_.png", bucket_name=None
         )
 
     @patch("rp_handler.os.path.exists")
@@ -193,9 +193,9 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         outputs = {
             "node_id": {"images": [{"filename": "ComfyUI_00001_.png", "subfolder": ""}]}
         }
-        job_id = "123"
+        job = {"id": "123"}
 
-        result = rp_handler.process_output_images(outputs, job_id)
+        result = rp_handler.process_output_images(outputs, job)
 
         # Check if the image was saved to the 'simulated_uploaded' directory
         self.assertIn("simulated_uploaded", result["message"])
