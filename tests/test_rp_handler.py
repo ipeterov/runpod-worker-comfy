@@ -167,7 +167,7 @@ class TestRunpodWorkerComfy(unittest.TestCase):
         self.assertEqual(result["status"], "success")
         self.assertEqual(result["message"], "http://example.com/uploaded/image.png")
         mock_upload_image.assert_called_once_with(
-            job_id, "./test_resources/images/test/ComfyUI_00001_.png"
+            job_id, "./test_resources/images/test/ComfyUI_00001_.png", bucket_name=None
         )
 
     @patch("rp_handler.os.path.exists")
