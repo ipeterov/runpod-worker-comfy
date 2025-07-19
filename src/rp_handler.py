@@ -200,7 +200,7 @@ def base64_encode(img_path):
         return f"{encoded_string}"
 
 
-def process_output_images(outputs, job_id):
+def process_output_images(outputs, job):
     """
     This function takes the "outputs" from image generation and the job ID,
     then determines the correct way to return the image, either as a direct URL
@@ -210,7 +210,7 @@ def process_output_images(outputs, job_id):
     Args:
         outputs (dict): A dictionary containing the outputs from image generation,
                         typically includes node IDs and their respective output data.
-        job_id (str): The unique identifier for the job.
+        job (dict): The whole job.
 
     Returns:
         dict: A dictionary with the status ('success' or 'error') and the message,
@@ -246,12 +246,18 @@ def process_output_images(outputs, job_id):
 
     print(f"runpod-worker-comfy - {local_image_path}")
 
+    if s3_config := job.get('s3Config'):
+        os.environ.setdefault("BUCKET_ENDPOINT_URL", s3_config.get('endpointUrl'))
+        os.environ.setdefault("BUCKET_ACCESS_KEY_ID", s3_config.get('accessId'))
+        os.environ.setdefault("BUCKET_SECRET_ACCESS_KEY", s3_config.get('accessSecret'))
+        os.environ.setdefault("BUCKET_NAME", s3_config.get('bucketName'))
+
     # The image is in the output folder
     if os.path.exists(local_image_path):
         if os.environ.get("BUCKET_ENDPOINT_URL", ""):
             # URL to image in AWS S3
             image = rp_upload.upload_image(
-                job_id,
+                job["id"],
                 local_image_path,
                 bucket_name=os.environ.get("BUCKET_NAME", None),
             )
@@ -309,7 +315,7 @@ def handler(job):
     )
 
     # Upload images if they exist
-    upload_result = upload_images(images)
+    upload_result = upload_images(images, job)
 
     if upload_result["status"] == "error":
         return upload_result
@@ -342,7 +348,7 @@ def handler(job):
         return {"error": f"Error waiting for image generation: {str(e)}"}
 
     # Get the generated image and return it as URL in an AWS bucket or as base64
-    images_result = process_output_images(history[prompt_id].get("outputs"), job["id"])
+    images_result = process_output_images(history[prompt_id].get("outputs"), job)
 
     result = {**images_result, "refresh_worker": REFRESH_WORKER}
 
