@@ -246,23 +246,15 @@ def process_output_images(outputs, job_id):
 
     print(f"runpod-worker-comfy - {local_image_path}")
 
-    BUCKET_ENDPOINT_URL = os.environ.get("BUCKET_ENDPOINT_URL", "")
-    BUCKET_ACCESS_KEY_ID = os.environ.get("BUCKET_ACCESS_KEY_ID", "")
-    BUCKET_SECRET_ACCESS_KEY = os.environ.get("BUCKET_SECRET_ACCESS_KEY", "")
-    BUCKET_NAME = os.environ.get("BUCKET_NAME", "")
-
-    s3_configured = all(setting for setting in [
-        BUCKET_ENDPOINT_URL,
-        BUCKET_ACCESS_KEY_ID,
-        BUCKET_SECRET_ACCESS_KEY,
-        BUCKET_NAME,
-    ])
-
     # The image is in the output folder
     if os.path.exists(local_image_path):
-        if s3_configured:
+        if os.environ.get("BUCKET_ENDPOINT_URL", ""):
             # URL to image in AWS S3
-            image = rp_upload.upload_image(job_id, local_image_path, bucket_name=BUCKET_NAME)
+            image = rp_upload.upload_image(
+                job_id,
+                local_image_path,
+                bucket_name=os.environ.get("BUCKET_NAME", None),
+            )
             print(
                 "runpod-worker-comfy - the image was generated and uploaded to AWS S3"
             )
