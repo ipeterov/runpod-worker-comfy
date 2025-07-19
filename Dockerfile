@@ -47,22 +47,23 @@ RUN wget -q --header="Authorization: Bearer ${HUGGINGFACE_ACCESS_TOKEN}" -O mode
 # Install runpod
 RUN pip install runpod requests dill lark diffusers timm groundingdino-py
 
-# Support for the network volume
-ADD src/extra_model_paths.yaml ./
-
 # Go back to the root
 WORKDIR /
 
-# Add scripts
-ADD src/start.sh src/restore_snapshot.sh src/rp_handler.py test_input.json ./
-RUN chmod +x /start.sh /restore_snapshot.sh
-
-# Optionally copy the snapshot file
-ADD *snapshot*.json /
-
 # Restore the snapshot to install custom nodes
+ADD src/restore_snapshot.sh ./
+RUN chmod +x  /restore_snapshot.sh
+ADD *snapshot*.json /
 RUN /restore_snapshot.sh
 
+# Copy scripts in
+ADD src/start.sh src/rp_handler.py test_input.json ./
+RUN chmod +x /start.sh
+
+# Support for the network volume
+ADD src/extra_model_paths.yaml /comfyui/
+
+# Turn off NSFW detector in ReActor
 COPY src/reactor_sfw.py /comfyui/custom_nodes/comfyui-reactor/scripts/
 
 # Start container
